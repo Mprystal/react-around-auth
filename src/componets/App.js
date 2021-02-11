@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {Route, Switch, useHistory } from "react-router-dom";
 
 import Header from './Header';
 import Main from './Main';
@@ -8,16 +9,44 @@ import PopupWithImage from './PopupWithImage';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+// import InfoTooltip from './InfoTooltip;'
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import api from '../utils/Api';
+import Register from './Register';
+import Login from './Login';
+import {getContent} from './Auth';
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] =React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false); 
-  const [selectedCard, setSelectedCard] = React.useState(undefined);
-  const [currentUser, setCurrentUser] = React.useState([]);
-  const[cards, setCards]=React.useState([]);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] =useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false); 
+  const [selectedCard, setSelectedCard] = useState(undefined);
+  const [currentUser, setCurrentUser] = useState([]);
+  const[cards, setCards]=useState([]);
+  const[loggedIn, setLoggedIn] = useState(false);
+  
+  const history = useHistory();
+
+  // React.useEffect(() => {
+  //   let jwt = localStorage.getItem('jwt');
+  //   if(jwt){
+  //    getContent(jwt)
+  //    .then((res)=> {
+  //      if(res){
+  //        console.log(res)
+  //       setLoggedIn(true);
+  //       // history.push('/')
+  //      }
+  //    })
+  //   }
+  // }, [loggedIn])
+
+  // const onSignOut = () =>{
+  //   localStorage.removeItem('jwt')
+  //   setLoggedIn(false);
+  //   history.push('/signout')
+  // }
 
   React.useEffect(() => {
     Promise.all([api.getUserInfo(),api.getCardList()]).then(
@@ -83,6 +112,7 @@ function App() {
     setIsEditAvatarPopupOpen(true);
   }
 
+
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
@@ -91,27 +121,56 @@ function App() {
     setIsAddPlacePopupOpen(true);
   }
 
+  function handleLogin(){
+    console.log('running')
+    setLoggedIn(true);
+  }
+
+ 
   
   
 
   return (
   <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
-      
-      <Header />
+      <Switch>
+        <ProtectedRoute exact path="/" loggedIn={loggedIn} 
+        // onSignOut={onSignOut} 
+        componet={<Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onImage={(card)=>{handleCardClick(card)}}
+          onCardLike={(card)=>{handleCardLike(card)}} onCardDelete={(card)=>{handleCardDelete(card)}} cards={cards}/>}>
 
-      <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onImage={(card)=>{handleCardClick(card)}}
-      onCardLike={(card)=>{handleCardLike(card)}} onCardDelete={(card)=>{handleCardDelete(card)}} cards={cards}/>
+        </ProtectedRoute>
 
-      <Footer />
+
+            
+          {/* <Route exact path="/" loggedIn={loggedIn} >
+              <Header />  
+              <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onImage={(card)=>{handleCardClick(card)}}
+          onCardLike={(card)=>{handleCardLike(card)}} onCardDelete={(card)=>{handleCardDelete(card)}} cards={cards}/>
+               <Footer />
+
+          </Route> */}
+
+         
+        
+        <Route exact path="/signup">
+          <Header />
+          <Register history={history} />
+          
+        </Route>
+        <Route exact path="/signin">
+          <Header />
+          <Login handleLogin={handleLogin} history={history}/>
+          
+        </Route>
+      </Switch>
+        
 
       <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
 
       <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}/>
 
       <AddPlacePopup onAddPlaceSubmit={handleAddPlaceSubmit} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}/>
-
-      
 
       <PopupWithForm name={"popup_type_delete-card"} title={"Are you sure?"} />
 
