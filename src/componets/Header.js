@@ -4,15 +4,20 @@ import aroundtheus from '../images/Vectorlogo.svg';
 
 function Header({loggedIn,handleSignOut, path}){
 
-    function handleText(loggedIn){
+
+    function handleButtonDisplay(){
         if(loggedIn){
-           return( 'Log out')
-        } 
-        else if (!loggedIn && path === 'signin'){
-            return 'Sign up'
-        } 
-        else {
-            return 'Log in'
+           return <button onClick={handleSignOut} className='header__button'>
+                Log out
+            </button>
+        } else if(!loggedIn && path === 'signin'){
+           return <a href='/signup'  className='header__link' >
+                Sign up
+            </a>
+        } else {
+           return <a href='/signin' className='header__link' > 
+                Log in
+            </a>
         }
     }
 
@@ -20,12 +25,10 @@ function Header({loggedIn,handleSignOut, path}){
         <header className="header">
             <img src={aroundtheus} alt="Logo" className="header__logo" />
             <div className="header__login-container">
-                <p style={{ color: 'white' }}> {} </p>
-                <button onClick={handleSignOut} className='header__button'>
-                    {
-                        handleText(loggedIn)
-                    }
-                </button>
+                { loggedIn ? <p style={{ color: 'white' }}> email@mail.com </p> : ''}
+            
+               { handleButtonDisplay()}
+               
             </div>   
         </header>
     )

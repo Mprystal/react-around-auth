@@ -2,23 +2,27 @@ import React, {useState} from "react";
 import {authorize} from './Auth'
 
 
+
 function Login ({handleLogin, history}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
+   
     
     const handleSubmit = (e) => {
         e.preventDefault();   
         if(!email || !password){
             return
         }
+        
         authorize(email, password)
         .then((data) => {
             console.log(data)
             if(!data){
+                
                 throw new Error('error!')
             }
             if(data.token){
+                
                 setEmail('');
                 setPassword(''); 
                 handleLogin();
@@ -33,6 +37,7 @@ function Login ({handleLogin, history}) {
 
 
     return (
+
         <div className='login'>
            
             <h2 className='login__heading'>Log in</h2>
@@ -46,9 +51,11 @@ function Login ({handleLogin, history}) {
                 
             </form>
           
-            <p className='login__paragraph'> Not a member? Sign up here!</p>
+            <p className='login__paragraph'><a href="/signup" style={{textDecoration:'none', color: 'white'}} >Not a member? Sign up here!</a> </p>
 
         </div>
+        
+       
     )
 }
 

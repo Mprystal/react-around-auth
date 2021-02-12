@@ -1,17 +1,21 @@
 import React,{} from 'react';
 
-function InfoTooltip(props) {
+
+function InfoTooltip({onClose, image, open, message}) {
     
 
     return(
-        <div>
+        <div className={`popup ${open && 'popup_open'}`}>
              <div className="popup__container">
+                 <div className="infoTool">
+                        <img className="infoTool__img" src={image} alt={'Success / failure icon'}/>
+                        <p className="infoTool__paragraph" style={{color:'black'}}>{message}</p>
+                 </div>
                 
-
                 <button
                     className="popup__close-button"
                     aria-label="Close popup button"
-                    onClick={props.onClose}
+                    onClick={onClose}
                     type="button"
                 ></button>
             </div>

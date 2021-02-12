@@ -1,15 +1,13 @@
 import React, {useState} from 'react';
-import {Route, Switch, useHistory } from "react-router-dom";
+import {Route, Switch, useHistory, Redirect } from "react-router-dom";
 
 import Header from './Header';
 import Main from './Main';
-import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import PopupWithImage from './PopupWithImage';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-// import InfoTooltip from './InfoTooltip;'
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import api from '../utils/Api';
 import Register from './Register';
@@ -21,10 +19,13 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] =useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false); 
+
   const [selectedCard, setSelectedCard] = useState(undefined);
   const [currentUser, setCurrentUser] = useState([]);
   const[cards, setCards]=useState([]);
   const[loggedIn, setLoggedIn] = useState(false);
+ 
+  
   
   const history = useHistory();
 
@@ -43,10 +44,10 @@ function App() {
   }, [history])
 
   const handleSignOut = () =>{
-    console.log('clicked')
-    localStorage.removeItem('jwt')
-    setLoggedIn(false);
-    history.push('/signin')
+      console.log('clicked')
+      localStorage.removeItem('jwt')
+      setLoggedIn(false);
+      history.push('/signin')
   }
 
   React.useEffect(() => {
@@ -101,7 +102,6 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard(undefined);
-    
   }
 
   function handleCardClick(card){
@@ -112,6 +112,7 @@ function App() {
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
   }
+
 
 
   function handleEditProfileClick() {
@@ -143,19 +144,23 @@ function App() {
         onCardLike={(card)=>{handleCardLike(card)}} 
         onCardDelete={(card)=>{handleCardDelete(card)}} 
         cards={cards}
+       
         />
          
         <Route exact path="/signup">
           <Header loggedIn={loggedIn} handleSignOut={handleSignOut} /> 
-          <Register history={history} />  
+          <Register  history={history}/>  
         </Route>
         <Route exact path="/signin">
           <Header loggedIn={loggedIn} path={'signin'} handleSignOut={handleSignOut} /> 
-          <Login handleLogin={handleLogin} history={history}/>  
+          <Login handleLogin={handleLogin} history={history}  />  
+        </Route>
+        <Route path='*'>
+          <Redirect to='./signup' />
         </Route>
       </Switch>
      
-        
+ 
 
       <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
 

@@ -24,6 +24,21 @@
   margin-left: 24px;
 }
 
+.header__button:hover {
+  color: rgba(255, 255, 255, 0.6);
+  transition: ease-in 0.2s;
+}
+
+.header__link {
+  color: white;
+  text-decoration: none;
+}
+
+.header__link:hover {
+  color: rgba(255, 255, 255, 0.6);
+  transition: ease-in 0.2s;
+}
+
 @media screen and (max-width: 320px) {
   .header {
     max-width: 100%;

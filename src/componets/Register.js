@@ -1,38 +1,56 @@
-import React, {useState, useEffect} from 'react';
-import {useHistory} from 'react-router-dom';
+import React, {useState} from 'react';
 import {register} from './Auth';
+import InfoTooltip from './InfoTooltip'
+import check from '../images/Unionchk.svg';
+import x from '../images/Unionx.svg';
 
 
 function Register({history}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    // const [message, setMessage] = useState('');
+    const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false)
+    const [message, setMessage] = useState('');
+    const [image, setImage]= useState(x)
    
   
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+        setTimeout(() => {
+            setIsInfoTooltipOpen(true)
+        }, 500);
         register(email, password)
         .then((res) => {
-            console.log(res)
-            if( !res || res.statusCode === 400){
+            if( !res || res.statusCode === 400){  
+                setImage(x)
+                setMessage('Oops, something went wrong! Please try again.') 
                 throw new Error( 'Error!')
             } else {
-                setEmail('');
-                setPassword('');
-                history.push('/signin')
+                return res
             }    
+        })
+        .then(()=> {
+                setImage(check)
+                setMessage('Success! You have now been registered.')
+        })
+        .then(()=> {
+            setEmail('');
+            setPassword('');
+            setTimeout(() => {
+                setImage('')
+                history.push('/signin')
+            }, 1500);
         })
         .catch((err) => {
             console.log(err)
-
-            // setMessage(err.message)
+                setImage(x)
+                setMessage('Oops, something went wrong! Please try again.') 
         })
     }
 
 
 
     return (
+        <>
         <div className='register'>
            
             <h2 className='register__heading'>Sign up</h2>
@@ -46,9 +64,11 @@ function Register({history}) {
                 
             </form>
           
-            <p className='register__paragraph'><a href="/signin">Already a member? Log in here!</a> </p>
+            <p className='register__paragraph'><a href="/signin" style={{textDecoration:'none', color: 'white'}}>Already a member? Log in here!</a> </p>
 
         </div>
+        <InfoTooltip image={image} message={message} open={isInfoTooltipOpen} onClose={()=>setIsInfoTooltipOpen(false)}/>
+        </>
     )
 }
 
