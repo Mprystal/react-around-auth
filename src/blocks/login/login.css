@@ -1,3 +1,9 @@
+@import url(./__heading/login__heading.css);
+@import url(./__form/login__form.css);
+@import url(./__input/login__input.css);
+@import url(./__button/login__button.css);
+@import url(./__paragraph/login____paragraph.css);
+
 .login {
   max-width: 882px;
   width: 100%;
@@ -5,61 +11,4 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.login__heading {
-  text-align: center;
-  font-weight: 900;
-  font-size: 24px;
-  line-height: 1.21;
-  color: white;
-  width: 358px;
-  margin: 60px 0 20px 0;
-}
-
-.login__form {
-  display: flex;
-  flex-direction: column;
-}
-
-.login__input {
-  width: 358px;
-  color: white;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 1.21;
-  margin-top: 30px;
-  padding-bottom: 13px;
-  background-color: black;
-  border: none;
-  border-bottom: 2px solid white;
-}
-
-.login__button {
-  width: 358px;
-  height: 50px;
-  background-color: white;
-  font-size: 18px;
-  line-height: 1.22;
-  font-weight: 400;
-  border-radius: 2px;
-  border: none;
-  cursor: pointer;
-  margin-top: 216px;
-  margin-bottom: 15px;
-}
-
-.login__button:hover {
-  opacity: 0.85;
-  transition: ease-in 0.2s;
-}
-
-.login__paragraph {
-  color: white;
-  font-weight: 400;
-  width: 358px;
-  font-size: 14px;
-  line-height: 1.21;
-  text-align: center;
-  margin: 0;
 }

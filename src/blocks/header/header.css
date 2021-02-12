@@ -1,4 +1,7 @@
 @import url(./__logo/header__logo.css);
+@import url(./__login-container/header__login-container.css);
+@import url(./__button/header__button.css);
+@import url(./__link/header__link.css);
 
 .header {
   max-width: 882px;
@@ -8,35 +11,6 @@
   border-bottom: 1px solid rgba(84, 84, 84, 0.7);
   display: flex;
   justify-content: space-between;
-}
-
-.header__login-container {
-  margin-top: 5px;
-  margin-bottom: 0;
-  display: flex;
-}
-
-.header__button {
-  background-color: transparent;
-  justify-self: center;
-  color: white;
-  border: none;
-  margin-left: 24px;
-}
-
-.header__button:hover {
-  color: rgba(255, 255, 255, 0.6);
-  transition: ease-in 0.2s;
-}
-
-.header__link {
-  color: white;
-  text-decoration: none;
-}
-
-.header__link:hover {
-  color: rgba(255, 255, 255, 0.6);
-  transition: ease-in 0.2s;
 }
 
 @media screen and (max-width: 320px) {
