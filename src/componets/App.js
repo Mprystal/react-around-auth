@@ -28,25 +28,26 @@ function App() {
   
   const history = useHistory();
 
-  // React.useEffect(() => {
-  //   let jwt = localStorage.getItem('jwt');
-  //   if(jwt){
-  //    getContent(jwt)
-  //    .then((res)=> {
-  //      if(res){
-  //        console.log(res)
-  //       setLoggedIn(true);
-  //       // history.push('/')
-  //      }
-  //    })
-  //   }
-  // }, [loggedIn])
+  React.useEffect(() => {
+    let jwt = localStorage.getItem('jwt');
+    if(jwt){
+     getContent(jwt)
+     .then((res)=> {
+       if(res){
+         console.log(res)
+        setLoggedIn(true);
+        history.push('/')
+       }
+     })
+    }
+  }, [history])
 
-  // const onSignOut = () =>{
-  //   localStorage.removeItem('jwt')
-  //   setLoggedIn(false);
-  //   history.push('/signout')
-  // }
+  const handleSignOut = () =>{
+    console.log('clicked')
+    localStorage.removeItem('jwt')
+    setLoggedIn(false);
+    history.push('/signin')
+  }
 
   React.useEffect(() => {
     Promise.all([api.getUserInfo(),api.getCardList()]).then(
@@ -125,45 +126,35 @@ function App() {
     console.log('running')
     setLoggedIn(true);
   }
-
- 
-  
   
 
   return (
   <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
       <Switch>
-        <ProtectedRoute exact path="/" loggedIn={loggedIn} 
-        // onSignOut={onSignOut} 
-        componet={<Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onImage={(card)=>{handleCardClick(card)}}
-          onCardLike={(card)=>{handleCardLike(card)}} onCardDelete={(card)=>{handleCardDelete(card)}} cards={cards}/>}>
-
-        </ProtectedRoute>
-
-
-            
-          {/* <Route exact path="/" loggedIn={loggedIn} >
-              <Header />  
-              <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onImage={(card)=>{handleCardClick(card)}}
-          onCardLike={(card)=>{handleCardLike(card)}} onCardDelete={(card)=>{handleCardDelete(card)}} cards={cards}/>
-               <Footer />
-
-          </Route> */}
-
+        <ProtectedRoute exact path="/" 
+        loggedIn={loggedIn} 
+        handleSignOut={handleSignOut}
+        component={Main} 
+        onEditAvatar={handleEditAvatarClick}
+        onEditProfile={handleEditProfileClick} 
+        onAddPlace={handleAddPlaceClick} 
+        onImage={(card)=>{handleCardClick(card)}}
+        onCardLike={(card)=>{handleCardLike(card)}} 
+        onCardDelete={(card)=>{handleCardDelete(card)}} 
+        cards={cards}
+        />
          
-        
         <Route exact path="/signup">
-          <Header />
-          <Register history={history} />
-          
+          <Header loggedIn={loggedIn} handleSignOut={handleSignOut} /> 
+          <Register history={history} />  
         </Route>
         <Route exact path="/signin">
-          <Header />
-          <Login handleLogin={handleLogin} history={history}/>
-          
+          <Header loggedIn={loggedIn} path={'signin'} handleSignOut={handleSignOut} /> 
+          <Login handleLogin={handleLogin} history={history}/>  
         </Route>
       </Switch>
+     
         
 
       <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />

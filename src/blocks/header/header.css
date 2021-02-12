@@ -6,6 +6,22 @@
   margin: 45px auto 0 auto;
   padding-bottom: 41px;
   border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__login-container {
+  margin-top: 5px;
+  margin-bottom: 0;
+  display: flex;
+}
+
+.header__button {
+  background-color: transparent;
+  justify-self: center;
+  color: white;
+  border: none;
+  margin-left: 24px;
 }
 
 @media screen and (max-width: 320px) {

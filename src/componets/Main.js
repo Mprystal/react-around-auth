@@ -1,6 +1,8 @@
 import React from 'react';
 import Card from './Card';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
+import Header from './Header'
+import Footer from './Footer'
 
 
 function Main(props){
@@ -8,6 +10,8 @@ function Main(props){
   const currentUser = React.useContext(CurrentUserContext);
 
     return(
+      <>
+      <Header loggedIn={props.loggedIn} handleSignOut={props.handleSignOut} />
         <main>
         <section className="profile">
           <div className="profile__container">
@@ -54,12 +58,10 @@ function Main(props){
                   
               )}
             </ul>
-        </section> 
-        
-          
-           
+        </section>      
       </main>
-      
+      <Footer />
+    </>
     )
 }
 

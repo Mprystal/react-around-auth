@@ -35,7 +35,7 @@ function Login ({handleLogin, history}) {
     return (
         <div className='login'>
            
-            <h2 className='login__heading'>Sign in</h2>
+            <h2 className='login__heading'>Log in</h2>
            
             <form onSubmit={handleSubmit} className='login__form'>
                 <input id='email' name='email' type='email' className='login__input' placeholder='Email' value={email} onChange={e=>setEmail(e.target.value)} />
