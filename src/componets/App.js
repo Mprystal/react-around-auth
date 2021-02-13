@@ -38,18 +38,13 @@ function App() {
      getContent(jwt)
      .then((res)=> {
        if(res){
+         setEmail(res.data.email)
         setLoggedIn(true);
         history.push('/')
        }
      })
     }
   }, [history])
-
-  const handleSignOut = () =>{
-      localStorage.removeItem('jwt')
-      setLoggedIn(false);
-      history.push('/signin')
-  }
 
   React.useEffect(() => {
     Promise.all([api.getUserInfo(),api.getCardList()]).then(
@@ -60,6 +55,12 @@ function App() {
           console.log(`Error: ${err}`);
         })
       },[])
+
+  const handleSignOut = () =>{
+      localStorage.removeItem('jwt')
+      setLoggedIn(false);
+      history.push('/signin')
+  }
 
   function handleCardLike(card) {        
     const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -130,13 +131,13 @@ function App() {
       e.preventDefault();   
       if(!email || !password){
           return
-      }    
+      }   
       authorize(email, password)
       .then((data) => {
           if(!data){   
               throw new Error('error!')
           }
-          if(data.token){     
+          if(data.token){   
               setPassword(''); 
               handleLogin();
               history.push('/')

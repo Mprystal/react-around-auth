@@ -1,8 +1,5 @@
 import React from "react";
 
-
-
-
 function Login ({handleLoginSubmit, email, password,handlePasswordChange,handleEmailChange}) {
     
     return (

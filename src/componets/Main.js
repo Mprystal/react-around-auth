@@ -10,7 +10,7 @@ function Main(props){
   const currentUser = React.useContext(CurrentUserContext);
     return(
       <>
-      <Header loggedIn={props.loggedIn} handleSignOut={props.handleSignOut} email={props.email} />
+      <Header  loggedIn={props.loggedIn} handleSignOut={props.handleSignOut} email={props.email} />
         <main>
         <section className="profile">
           <div className="profile__container">
