@@ -20,15 +20,12 @@ function Register({history}) {
         }, 500);
         register(email, password)
         .then((res) => {
-            if( !res || res.statusCode === 400){  
-                setImage(x)
-                setMessage('Oops, something went wrong! Please try again.') 
+            if( !res || res.status === 400){  
                 throw new Error( 'Error!')
-            } else {
-                return res
+            } else if(res.status === 200 || 201) {
+                    return res.json();
             }    
-        })
-        .then(()=> {
+        }).then(()=> {
                 setImage(check)
                 setMessage('Success! You have now been registered.')
         })
@@ -40,8 +37,7 @@ function Register({history}) {
                 history.push('/signin')
             }, 1500);
         })
-        .catch((err) => {
-            console.log(err)
+        .catch(() => {
                 setImage(x)
                 setMessage('Oops, something went wrong! Please try again.') 
         })

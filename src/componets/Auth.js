@@ -8,16 +8,16 @@ export const register = (email, password) => {
         },
         body: JSON.stringify({email, password})
     })
-    .then((response => {
-        console.log(response)
-        try {
-            if (response.status === 200 || 201){
-              return response.json();
-            }
-          } catch(e){
-              return (e)
-          }
-    })).then((res)=> res)
+    // .then((response => {
+    //     console.log(response)
+    //     try {
+    //         if (response.status === 200 || 201){
+    //           return response.json();
+    //         }
+    //       } catch(e){
+    //           return (e)
+    //       }
+    // })).then((data)=> {console.log(data)})
     .catch((err) => console.log(err))
 }
 
