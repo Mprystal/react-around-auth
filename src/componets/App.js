@@ -15,6 +15,8 @@ import Login from './Login';
 import {getContent} from './Auth';
 import ProtectedRoute from './ProtectedRoute';
 
+import {authorize} from './Auth';
+
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] =useState(false);
@@ -23,10 +25,11 @@ function App() {
   const [selectedCard, setSelectedCard] = useState(undefined);
   const [currentUser, setCurrentUser] = useState([]);
   const[cards, setCards]=useState([]);
-  const[loggedIn, setLoggedIn] = useState(false);
- 
-  
-  
+  const[loggedIn, setLoggedIn] = useState(false); 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+
   const history = useHistory();
 
   React.useEffect(() => {
@@ -35,7 +38,6 @@ function App() {
      getContent(jwt)
      .then((res)=> {
        if(res){
-         console.log(res)
         setLoggedIn(true);
         history.push('/')
        }
@@ -44,7 +46,6 @@ function App() {
   }, [history])
 
   const handleSignOut = () =>{
-      console.log('clicked')
       localStorage.removeItem('jwt')
       setLoggedIn(false);
       history.push('/signin')
@@ -113,8 +114,6 @@ function App() {
     setIsEditAvatarPopupOpen(true);
   }
 
-
-
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
@@ -124,9 +123,39 @@ function App() {
   }
 
   function handleLogin(){
-    console.log('running')
     setLoggedIn(true);
   }
+
+  const handleLoginSubmit = (e) => {
+      e.preventDefault();   
+      if(!email || !password){
+          return
+      }    
+      authorize(email, password)
+      .then((data) => {
+          if(!data){   
+              throw new Error('error!')
+          }
+          if(data.token){     
+              setPassword(''); 
+              handleLogin();
+              history.push('/')
+              return
+          }
+      })
+      .catch(err => 
+          console.log(err) 
+      )
+  }
+
+  function handleEmailChange(e){
+    setEmail(e.target.value)
+  }
+
+  function handlePasswordChange(e){
+    setPassword(e.target.value)
+  }
+
   
 
   return (
@@ -144,7 +173,7 @@ function App() {
         onCardLike={(card)=>{handleCardLike(card)}} 
         onCardDelete={(card)=>{handleCardDelete(card)}} 
         cards={cards}
-       
+        email={email}
         />
          
         <Route exact path="/signup">
@@ -153,7 +182,12 @@ function App() {
         </Route>
         <Route exact path="/signin">
           <Header loggedIn={loggedIn} path={'signin'} handleSignOut={handleSignOut} /> 
-          <Login handleLogin={handleLogin} history={history}  />  
+          <Login 
+            handleLoginSubmit={handleLoginSubmit}
+            email={email}
+            password={password}
+            handleEmailChange={handleEmailChange}
+            handlePasswordChange={handlePasswordChange} />  
         </Route>
         <Route path='*'>
           <Redirect to='./signup' />
@@ -161,7 +195,6 @@ function App() {
       </Switch>
      
  
-
       <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
 
       <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}/>

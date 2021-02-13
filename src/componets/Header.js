@@ -2,8 +2,7 @@ import React from 'react';
 import aroundtheus from '../images/Vectorlogo.svg';
 
 
-function Header({loggedIn,handleSignOut, path}){
-
+function Header({loggedIn,handleSignOut, path, email}){
 
     function handleButtonDisplay(){
         if(loggedIn){
@@ -20,12 +19,12 @@ function Header({loggedIn,handleSignOut, path}){
             </a>
         }
     }
-
+    
     return(
         <header className="header">
             <img src={aroundtheus} alt="Logo" className="header__logo" />
             <div className="header__login-container">
-                { loggedIn ? <p style={{ color: 'white' }}> email@mail.com </p> : ''}
+                { loggedIn ? <p style={{ color: 'white' }}> {email} </p> : ''}
             
                { handleButtonDisplay()}
                
