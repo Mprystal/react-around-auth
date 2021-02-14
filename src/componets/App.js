@@ -9,7 +9,7 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
-import api from '../utils/apis';
+import api from '../utils/api';
 import Register from './Register';
 import Login from './Login';
 import {getContent, register,authorize} from '../utils/auth';
