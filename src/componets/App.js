@@ -12,13 +12,12 @@ import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import api from '../utils/api';
 import Register from './Register';
 import Login from './Login';
-import {getContent, register} from './Auth';
+import {getContent, register,authorize} from '../utils/auth';
 import ProtectedRoute from './ProtectedRoute';
 import InfoTooltip from './InfoTooltip';
 import check from '../images/Unionchk.svg';
 import x from '../images/Unionx.svg';
 
-import {authorize} from './Auth';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
