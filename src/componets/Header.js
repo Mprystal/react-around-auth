@@ -24,7 +24,7 @@ function Header({loggedIn,handleSignOut, path, email}){
         <header className="header">
             <img src={aroundtheus} alt="Logo" className="header__logo" />
             <div className="header__login-container">
-                { loggedIn ? <p style={{ color: 'white' }}> {email} </p> : ''}
+                { loggedIn ? <p className='header__paragraph'> {email} </p> : ''}
             
                { handleButtonDisplay()}
                

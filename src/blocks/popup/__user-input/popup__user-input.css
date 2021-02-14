@@ -23,3 +23,10 @@
 .popup__user-input:invalid:last-of-type {
   margin-top: 9px;
 }
+
+@media screen and (max-width: 480px) {
+  .popup__user-input {
+    width: 210px;
+    margin-bottom: 22px;
+  }
+}

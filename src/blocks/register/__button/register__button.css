@@ -1,4 +1,4 @@
-.login__button {
+.register__button {
   width: 358px;
   height: 50px;
   background-color: white;
@@ -12,13 +12,13 @@
   margin-bottom: 15px;
 }
 
-.login__button:hover {
+.register__button:hover {
   opacity: 0.85;
   transition: ease-in 0.2s;
 }
 
 @media screen and (max-width: 320px) {
-  .login__button {
+  .register__button {
     width: 260px;
     height: 46px;
     font-size: 16px;

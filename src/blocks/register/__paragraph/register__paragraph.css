@@ -1,4 +1,4 @@
-.login__paragraph {
+.register__paragraph {
   color: white;
   font-weight: 400;
   font-size: 14px;
@@ -8,7 +8,7 @@
 }
 
 @media screen and (max-width: 320px) {
-  .login__paragraph {
+  .register__paragraph {
     font-size: 12px;
   }
 }
