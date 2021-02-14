@@ -1,11 +1,11 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm';
-import {CurrentUserContext} from '../contexts/CurrentUserContext';
+
 
 function AddPlacePopup(props){
     const [name, setName] = React.useState('')
     const [link, setLink] = React.useState('')
-    const currentUser = React.useContext(CurrentUserContext);
+    
 
     function nameChangeHandler(e){
         setName(e.target.value)
@@ -23,11 +23,12 @@ function AddPlacePopup(props){
           name,
           link
         });
+        setName('')
+        setLink('')
       } 
 
     return(
-        <PopupWithForm  name={"popup_type_add-card"} onSubmit={handleSubmit} title={"New Place"} children={
-            <>
+        <PopupWithForm  name={"popup_type_add-card"} onSubmit={handleSubmit} title={"New Place"} isOpen={props.isOpen} onClose={props.onClose}>
             <input
                   id="card-title"
                   className="popup__user-input popup__user-input_card-heading"
@@ -55,8 +56,8 @@ function AddPlacePopup(props){
                 />
     
                 <span id="card-url-error" className="popup__error"></span>
-            </>
-          } isOpen={props.isOpen} onClose={props.onClose}/>
+           
+            </PopupWithForm>
     
     )
 }

@@ -9,11 +9,14 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
-import api from '../utils/Api';
+import api from '../utils/api';
 import Register from './Register';
 import Login from './Login';
-import {getContent} from './Auth';
+import {getContent, register} from './Auth';
 import ProtectedRoute from './ProtectedRoute';
+import InfoTooltip from './InfoTooltip';
+import check from '../images/Unionchk.svg';
+import x from '../images/Unionx.svg';
 
 import {authorize} from './Auth';
 
@@ -21,19 +24,21 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] =useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false); 
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
 
   const [selectedCard, setSelectedCard] = useState(undefined);
-  const [currentUser, setCurrentUser] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
   const[cards, setCards]=useState([]);
   const[loggedIn, setLoggedIn] = useState(false); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [message, setMessage] = useState('');
+  const [image, setImage]= useState(x)
 
   const history = useHistory();
 
   React.useEffect(() => {
-    let jwt = localStorage.getItem('jwt');
+    const jwt = localStorage.getItem('jwt');
     if(jwt){
      getContent(jwt)
      .then((res)=> {
@@ -104,6 +109,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard(undefined);
+    setIsInfoTooltipOpen(false)
   }
 
   function handleCardClick(card){
@@ -149,6 +155,38 @@ function App() {
       )
   }
 
+  const handleRegisterSubmit = (e) => {
+    e.preventDefault();
+    setTimeout(() => {
+        setIsInfoTooltipOpen(true)
+    }, 500);
+    register(email, password)
+    .then((res) => {
+        if( !res || res.status === 400){  
+            throw new Error( 'Error!')
+        } else if(res.status === 200 || 201) {
+                return res.json();
+        }    
+    }).then(()=> {
+            setImage(check)
+            setMessage('Success! You have now been registered.')
+    })
+    .then(()=> {
+        setEmail('');
+        setPassword('');
+        setTimeout(() => {
+            setIsInfoTooltipOpen(false)
+            setImage('')
+            history.push('/signin');
+        }, 1500);
+        
+    })
+    .catch(() => {
+            setImage(x)
+            setMessage('Oops, something went wrong! Please try again.') 
+    })
+}
+
   function handleEmailChange(e){
     setEmail(e.target.value)
   }
@@ -179,7 +217,13 @@ function App() {
          
         <Route exact path="/signup">
           <Header loggedIn={loggedIn} handleSignOut={handleSignOut} /> 
-          <Register  history={history}/>  
+          <Register  
+          email={email}
+          password={password}
+          handleEmailChange={handleEmailChange}
+          handlePasswordChange={handlePasswordChange}
+          handleRegisterSubmit={handleRegisterSubmit}
+          />  
         </Route>
         <Route exact path="/signin">
           <Header loggedIn={loggedIn} path={'signin'} handleSignOut={handleSignOut} /> 
@@ -205,6 +249,9 @@ function App() {
       <PopupWithForm name={"popup_type_delete-card"} title={"Are you sure?"} />
 
       <PopupWithImage card={selectedCard}  onClose={closeAllPopups}/>
+
+      <InfoTooltip image={image} message={message} open={isInfoTooltipOpen} onClose={closeAllPopups}/>
+      
     
     </div>
     </CurrentUserContext.Provider>

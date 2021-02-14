@@ -32,7 +32,6 @@ function Card(props){
     return(
             <li className="element__card">
                 <button
-                  id="remove"
                   onClick={handleDeleteClick}
                   className={cardDeleteButton}
                   aria-label="Remove card button"
